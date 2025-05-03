@@ -1,0 +1,9 @@
+.env
+node_modules/
+generated
+
+# Prisma
+.prisma/
+@prisma/
+prisma/dev.db
+prisma/dev.db-journal
