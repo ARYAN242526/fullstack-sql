@@ -1,4 +1,4 @@
-import express, { urlencoded } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -13,19 +13,13 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(urlencoded({extended : true}));
+app.use(express.urlencoded({extended : true}));
 
 app.use(cors({
-    origin : "http://localhost:5173",
+    origin : process.env.BASE_URL,
     credentials : true
 }))
 
-app.get("/" , (req,res) => {
-    res.status(200).json({
-        success : true,
-        message : "Test route"
-    })
-})
 
 app.use('/api/v1/users',userRouter);
 
