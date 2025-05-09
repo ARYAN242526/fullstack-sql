@@ -171,3 +171,54 @@ export const loginUser = async(req,res) => {
     }
 
 }
+
+export const getUser = async(req,res) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where : {
+                id : req.user.id
+            }
+        })
+        if(!user){
+            return res.status(400).json({
+                success : false,
+                message : "User not found",
+              });
+        }
+
+        res.status(200).json({
+            success : true,
+            message : "User fetched successfully",
+            profile : {
+                uid : user.id,
+                name : user.name,
+                email : user.email,
+                role : user.role,
+            }
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            success : false,
+            message : "Login Failed",
+            error
+        }) 
+    }
+}
+
+export const logoutUser = async(req,res) => {
+    try {
+        res.cookie("token" , '', {httpOnly : true})
+
+        return res.status(200).json({
+            success : true,
+            message : "User logged out successfully"
+        })
+    } catch (error) {
+        return res.status(400).json({
+            message  : "User logout failed",
+            success : false,
+            error
+          });
+    }
+}
